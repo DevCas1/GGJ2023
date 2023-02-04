@@ -94,6 +94,7 @@ public class Cauldron : Interactable
         Debug.Log(message);
 
         // Change cauldron FX
+        ChangeContentColor();
     }
 
     private void FailBrew()
@@ -115,6 +116,11 @@ public class Cauldron : Interactable
 
         possible = ((amountOfHerbs == requiredHerbs) || (amountOfHerbs < requiredHerbs)) && ((containsBeetroot == requiresBeet) || (containsBeetroot == false && requiresBeet == true)) && ((containsMold == requiresMold) || (containsMold == false && requiresMold == true)) && ((containsSunflower == requiresSunflower) || (containsSunflower == false && requiresSunflower == true));
         return (amountOfHerbs == requiredHerbs) && (containsBeetroot == requiresBeet) && (containsMold == requiresMold) && (containsSunflower == requiresSunflower);
+    }
+
+    private void ChangeContentColor()
+    {
+
     }
 
     public bool GetFromCauldron(out Recipe recipe)

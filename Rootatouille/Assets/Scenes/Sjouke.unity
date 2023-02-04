@@ -1098,7 +1098,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 884512156}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.75, y: -3.5, z: 0}
+  m_LocalPosition: {x: -5.936, y: -3.25, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1121,49 +1121,13 @@ MonoBehaviour:
   InteractableType: 2
   OnSelect:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1221418516}
-        m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
   OnDeselect:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1221418516}
-        m_TargetAssemblyTypeName: UnityEngine.Renderer, UnityEngine
-        m_MethodName: set_enabled
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnDrag:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
-        m_MethodName: PlayOneShot
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.AudioClip, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnDrop:
     m_PersistentCalls:
       m_Calls: []
@@ -1198,7 +1162,7 @@ PolygonCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -1213,17 +1177,14 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.28125, y: 0.78125}
-      - {x: -0.34375, y: 0.71875}
-      - {x: -0.34375, y: 0.25}
-      - {x: -0.3125, y: -0.09375}
-      - {x: -0.28125, y: -0.1875}
-      - {x: -0.28125, y: -0.8125}
-      - {x: -0.25, y: -0.84375}
-      - {x: -0.09375, y: -0.84375}
-      - {x: 0.0625, y: -0.75}
-      - {x: 0.3125, y: 0.0625}
-      - {x: 0.3125, y: 0.78125}
+    - - {x: 0.59375, y: 0.65625}
+      - {x: -0.0625, y: 0.65625}
+      - {x: -0.0625, y: -0.8125}
+      - {x: 0.03125, y: -0.96875}
+      - {x: 0.15625, y: -0.96875}
+      - {x: 0.3125, y: -0.84375}
+      - {x: 0.40625, y: -0.625}
+      - {x: 0.59375, y: -0.03125}
   m_UseDelaunayMesh: 0
 --- !u!1 &1153494734
 GameObject:
@@ -1578,12 +1539,12 @@ SpriteRenderer:
   m_SortingLayerID: 1603623253
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 89d13262cf3e9b9409de833a81545471, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 06d470c60ca54dd4380a501aeb95bf2a, type: 3}
   m_Color: {r: 0.9999447, g: 0.21960784, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2, y: 2}
+  m_Size: {x: 0.64, y: 0.64}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -1824,6 +1785,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   OnDeselect:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHeal:
+    m_PersistentCalls:
+      m_Calls: []
+  OnKill:
     m_PersistentCalls:
       m_Calls: []
 --- !u!60 &1451751300
