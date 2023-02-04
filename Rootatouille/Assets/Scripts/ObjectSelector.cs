@@ -27,7 +27,6 @@ public class ObjectSelector : MonoBehaviour
     private bool isDragging = false;
     private Dragable draggingDragable = null;
     private DragableType draggingDragableType;
-    private Vector3 dragableStartPos = Vector3.zero;
 
     private void Awake()
     {
@@ -134,7 +133,6 @@ public class ObjectSelector : MonoBehaviour
 
         pointerStatus = PointerClickStatus.Hold;
         isDragging = true;
-        dragableStartPos = draggingDragable.transform.position;
     }
 
     private void CheckForObjects()
@@ -155,18 +153,16 @@ public class ObjectSelector : MonoBehaviour
 
     private void Drag()
     {
-        draggingDragable.transform.position = new(pointerWorldPos.x, pointerWorldPos.y, dragableStartPos.z);
+        draggingDragable.transform.position = new(pointerWorldPos.x, pointerWorldPos.y, 0);
     }
 
     private void StopDragging()
     {
         isDragging = false;
-        draggingDragable.transform.position = dragableStartPos;
-        dragableStartPos = Vector2.zero;
 
         if (draggingDragableType == DragableType.Ingredient && hoversOverCauldron)
         {
-            Debug.Log($"Dropped {draggingDragable.dragableType} {draggingDragable.transform.name} into the cauldron.");
+            // Debug.Log($"Dropped {draggingDragable.dragableType} {draggingDragable.transform.name} into the cauldron.");
             Cauldron.AddIngredient(draggingDragable.GetComponent<Ingredient>());
         }
 

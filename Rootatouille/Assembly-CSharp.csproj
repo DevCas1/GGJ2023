@@ -48,8 +48,12 @@
      <Compile Include="Assets\Input\PlayerInput.cs" />
      <Compile Include="Assets\Scripts\Interactable\Interactable.cs" />
      <Compile Include="Assets\Scripts\InputHandler.cs" />
+     <Compile Include="Assets\Scripts\RecipeBook.cs" />
+     <Compile Include="Assets\Scripts\Interactable\Patient.cs" />
      <Compile Include="Assets\Scripts\ObjectSelector.cs" />
+     <Compile Include="Assets\Scripts\Interactable\InteractableType.cs" />
      <Compile Include="Assets\Scripts\Interactable\Concoction.cs" />
+     <Compile Include="Assets\Scripts\Recipe.cs" />
      <Compile Include="Assets\Scripts\Interactable\Cauldron.cs" />
     <Reference Include="UnityEngine">
         <HintPath>D:\Program Files\Unity\2022.2.5f1\Editor\Data\Managed\UnityEngine\UnityEngine.dll</HintPath>

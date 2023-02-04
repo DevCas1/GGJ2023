@@ -1,1 +1,1 @@
-public enum IngredientType { Carrot, Herb, BlueMold }
+public enum IngredientType { Carrot, Herb, Mold, Beetroot, Sunflower }

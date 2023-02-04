@@ -1,7 +1,14 @@
+using UnityEngine;
+using UnityEngine.Events;
+
 public class Dragable : Interactable
 {
+    public UnityEvent OnDrag;
+    public UnityEvent OnDrop;
+    public new InteractableType InteractableType => InteractableType.Dragable;
     public override bool IsSelectable { get => !isBeingDragged && collider.enabled; }
     public DragableType dragableType;
+    protected Vector3 originalPosition;
     protected bool isBeingDragged;
 
     // public override void Select()
@@ -16,14 +23,19 @@ public class Dragable : Interactable
 
     public void Drag()
     {
+        originalPosition = transform.position;
         isBeingDragged = true;
         collider.enabled = false;
+
+        if (OnDrag != null)
+            OnDrag.Invoke();
     }
 
     public void Drop()
     {
         isBeingDragged = false;
         collider.enabled = true;
+        transform.position = originalPosition;
     }
 
     protected virtual void OnEnable()
