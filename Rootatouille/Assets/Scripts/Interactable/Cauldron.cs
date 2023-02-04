@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Cauldron : Interactable
 {
+    public Color FailedBrewColor;
     public new InteractableType InteractableType => InteractableType.Cauldron;
 
     [SerializeField] private SpriteRenderer cauldronContent;
@@ -26,7 +27,8 @@ public class Cauldron : Interactable
         switch (ingredient.IngredientType)
         {
             case IngredientType.Carrot:
-                amountOfHerbs = 0;
+                if (amountOfHerbs > 0)
+                    amountOfHerbs--;
                 break;
 
             case IngredientType.Herb:
@@ -93,8 +95,10 @@ public class Cauldron : Interactable
         string message = (correctRecipe ? "Current brew: " + brewnRecipe.name : "Current brew isn't known") + ". Remaining possibilities: " + remainingRecipies;
         Debug.Log(message);
 
-        // Change cauldron FX
-        ChangeContentColor();
+        if (correctRecipe)
+            ChangeContentColor(false, brewnRecipe.RecipeColor);
+        else if (ingredient.HasColor)
+            ChangeContentColor(containsBeetroot != false || containsMold != false || containsSunflower != false || ingredient.IngredientType == IngredientType.Carrot, ingredient.IngredientColor);
     }
 
     private void FailBrew()
@@ -102,6 +106,7 @@ public class Cauldron : Interactable
         correctRecipe = false;
         brewnRecipe = null;
         remainingRecipies = 0;
+        ChangeContentColor(false, FailedBrewColor);
 
         Debug.Log("Brew failed!");
     }
@@ -118,9 +123,9 @@ public class Cauldron : Interactable
         return (amountOfHerbs == requiredHerbs) && (containsBeetroot == requiresBeet) && (containsMold == requiresMold) && (containsSunflower == requiresSunflower);
     }
 
-    private void ChangeContentColor()
+    private void ChangeContentColor(bool mixColor, Color newColor) //TODO: Lerp color over time
     {
-
+        cauldronContent.color = mixColor ? Color.Lerp(cauldronContent.color, newColor, 0.5f) : newColor;
     }
 
     public bool GetFromCauldron(out Recipe recipe)

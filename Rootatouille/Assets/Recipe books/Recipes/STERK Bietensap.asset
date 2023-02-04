@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fc2fee265bf743c4da299c6abde7bcdb, type: 3}
-  m_Name: You figure it out
+  m_Name: STERK Bietensap
   m_EditorClassIdentifier: 
   Content:
     Beet: 1
-    Mold: 1
+    Mold: 0
     Sunflower: 0
-    Herbs: 0
+    Herbs: 3
+  RecipeColor: {r: 0.2784314, g: 0.11764707, b: 0.18823531, a: 1}

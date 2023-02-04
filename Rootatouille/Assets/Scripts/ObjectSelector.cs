@@ -10,6 +10,7 @@ public class ObjectSelector : MonoBehaviour
 
     [SerializeField] private InputHandler InputHandler;
     [SerializeField] private Cauldron Cauldron;
+    [SerializeField] private Brew Flask;
 
     private new Camera camera;
 
@@ -162,8 +163,13 @@ public class ObjectSelector : MonoBehaviour
 
         if (draggingDragableType == DragableType.Ingredient && hoversOverCauldron)
         {
-            // Debug.Log($"Dropped {draggingDragable.dragableType} {draggingDragable.transform.name} into the cauldron.");
             Cauldron.AddIngredient(draggingDragable.GetComponent<Ingredient>());
+        }
+
+        if (draggingDragableType == DragableType.Brew && hoversOverCauldron)
+        {
+            bool correctRecipe = Cauldron.GetFromCauldron(out Recipe recipe);
+            Flask.SetRecipe(correctRecipe, correctRecipe ? recipe.RecipeColor : Cauldron.FailedBrewColor, recipe);
         }
 
         draggingDragable.Drop();

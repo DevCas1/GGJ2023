@@ -310,11 +310,11 @@
     <Reference Include="Unity.Burst.Cecil">
         <HintPath>D:\Repositories\GGJ2023\Rootatouille\Library\PackageCache\com.unity.burst@1.8.2\Unity.Burst.CodeGen\Unity.Burst.Cecil.dll</HintPath>
     </Reference>
-    <Reference Include="Unity.Burst.Cecil.Rocks">
-        <HintPath>D:\Repositories\GGJ2023\Rootatouille\Library\PackageCache\com.unity.burst@1.8.2\Unity.Burst.CodeGen\Unity.Burst.Cecil.Rocks.dll</HintPath>
-    </Reference>
     <Reference Include="DOTween">
         <HintPath>D:\Repositories\GGJ2023\Rootatouille\Assets\Plugins\DOTween\DOTween.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Burst.Cecil.Rocks">
+        <HintPath>D:\Repositories\GGJ2023\Rootatouille\Library\PackageCache\com.unity.burst@1.8.2\Unity.Burst.CodeGen\Unity.Burst.Cecil.Rocks.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
         <HintPath>D:\Program Files\Unity\2022.2.5f1\Editor\Data\NetStandard\ref\2.1.0\netstandard.dll</HintPath>

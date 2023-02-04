@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fc2fee265bf743c4da299c6abde7bcdb, type: 3}
-  m_Name: Goldy moldy
+  m_Name: Something...
   m_EditorClassIdentifier: 
   Content:
     Beet: 0
     Mold: 1
-    Sunflower: 0
-    Herbs: 3
+    Sunflower: 1
+    Herbs: 2
+  RecipeColor: {r: 0.24705884, g: 0.7294118, b: 0.54901963, a: 1}

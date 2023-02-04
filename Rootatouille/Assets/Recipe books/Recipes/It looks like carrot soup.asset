@@ -17,3 +17,4 @@ MonoBehaviour:
     Mold: 0
     Sunflower: 1
     Herbs: 1
+  RecipeColor: {r: 1, g: 0.41822243, b: 0, a: 1}
