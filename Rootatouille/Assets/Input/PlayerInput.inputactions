@@ -22,23 +22,14 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
-                },
-                {
-                    "name": "Delta",
-                    "type": "Value",
-                    "id": "66a6d463-4d22-40a2-a14d-50b7cf7b0f39",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
                 }
             ],
             "bindings": [
                 {
                     "name": "",
                     "id": "07ef2ec4-a7f3-498c-9e6b-138514790fb8",
-                    "path": "<Mouse>/press",
-                    "interactions": "",
+                    "path": "<Pointer>/press",
+                    "interactions": "Press(behavior=2)",
                     "processors": "",
                     "groups": "",
                     "action": "Click",
@@ -48,22 +39,11 @@
                 {
                     "name": "",
                     "id": "15d769de-152b-4f39-aa67-8bc4c430a68f",
-                    "path": "<Mouse>/position",
+                    "path": "<Pointer>/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Position",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "3f36862c-f3f1-40d2-9680-3d90559fb588",
-                    "path": "<Mouse>/delta",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Delta",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

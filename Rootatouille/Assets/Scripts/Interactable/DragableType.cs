@@ -1,0 +1,1 @@
+public enum DragableType { Ingredient, Brew }

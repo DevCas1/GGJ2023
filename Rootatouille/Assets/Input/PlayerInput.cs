@@ -44,23 +44,14 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
-                },
-                {
-                    ""name"": ""Delta"",
-                    ""type"": ""Value"",
-                    ""id"": ""66a6d463-4d22-40a2-a14d-50b7cf7b0f39"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
                 {
                     ""name"": """",
                     ""id"": ""07ef2ec4-a7f3-498c-9e6b-138514790fb8"",
-                    ""path"": ""<Mouse>/press"",
-                    ""interactions"": """",
+                    ""path"": ""<Pointer>/press"",
+                    ""interactions"": ""Press(behavior=2)"",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Click"",
@@ -70,22 +61,11 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""15d769de-152b-4f39-aa67-8bc4c430a68f"",
-                    ""path"": ""<Mouse>/position"",
+                    ""path"": ""<Pointer>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Position"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""3f36862c-f3f1-40d2-9680-3d90559fb588"",
-                    ""path"": ""<Mouse>/delta"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Delta"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -98,7 +78,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_Mouse = asset.FindActionMap("Mouse", throwIfNotFound: true);
         m_Mouse_Click = m_Mouse.FindAction("Click", throwIfNotFound: true);
         m_Mouse_Position = m_Mouse.FindAction("Position", throwIfNotFound: true);
-        m_Mouse_Delta = m_Mouse.FindAction("Delta", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -160,14 +139,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private IMouseActions m_MouseActionsCallbackInterface;
     private readonly InputAction m_Mouse_Click;
     private readonly InputAction m_Mouse_Position;
-    private readonly InputAction m_Mouse_Delta;
     public struct MouseActions
     {
         private @PlayerInput m_Wrapper;
         public MouseActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Click => m_Wrapper.m_Mouse_Click;
         public InputAction @Position => m_Wrapper.m_Mouse_Position;
-        public InputAction @Delta => m_Wrapper.m_Mouse_Delta;
         public InputActionMap Get() { return m_Wrapper.m_Mouse; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -183,9 +160,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Position.started -= m_Wrapper.m_MouseActionsCallbackInterface.OnPosition;
                 @Position.performed -= m_Wrapper.m_MouseActionsCallbackInterface.OnPosition;
                 @Position.canceled -= m_Wrapper.m_MouseActionsCallbackInterface.OnPosition;
-                @Delta.started -= m_Wrapper.m_MouseActionsCallbackInterface.OnDelta;
-                @Delta.performed -= m_Wrapper.m_MouseActionsCallbackInterface.OnDelta;
-                @Delta.canceled -= m_Wrapper.m_MouseActionsCallbackInterface.OnDelta;
             }
             m_Wrapper.m_MouseActionsCallbackInterface = instance;
             if (instance != null)
@@ -196,9 +170,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Position.started += instance.OnPosition;
                 @Position.performed += instance.OnPosition;
                 @Position.canceled += instance.OnPosition;
-                @Delta.started += instance.OnDelta;
-                @Delta.performed += instance.OnDelta;
-                @Delta.canceled += instance.OnDelta;
             }
         }
     }
@@ -207,6 +178,5 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     {
         void OnClick(InputAction.CallbackContext context);
         void OnPosition(InputAction.CallbackContext context);
-        void OnDelta(InputAction.CallbackContext context);
     }
 }
