@@ -84,6 +84,11 @@ public class Cauldron : Interactable
         }
 
         remainingRecipies = possibleCount;
+        if (remainingRecipies == 0)
+        {
+            FailBrew();
+            return;
+        }
 
         string message = (correctRecipe ? "Current brew: " + brewnRecipe.name : "Current brew isn't known") + ". Remaining possibilities: " + remainingRecipies;
         Debug.Log(message);
