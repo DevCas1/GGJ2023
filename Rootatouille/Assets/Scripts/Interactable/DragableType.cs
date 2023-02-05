@@ -1,1 +1,1 @@
-public enum DragableType { Ingredient, Brew, Cork }
+public enum DragableType { Ingredient, Flask, Cork }

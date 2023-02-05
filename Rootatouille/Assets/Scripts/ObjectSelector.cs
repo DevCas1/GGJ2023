@@ -33,6 +33,8 @@ public class ObjectSelector : MonoBehaviour
     private bool isDragging = false;
     private Dragable draggingDragable = null;
     private DragableType draggingDragableType;
+    private Patient selectedPatient = null;
+    private bool patientSelected = false;
 
     private void Awake()
     {
@@ -49,18 +51,39 @@ public class ObjectSelector : MonoBehaviour
     {
         CheckForObjects();
 
-        if (!dragableSelected && raycastResults.Length > 0)
+        if (raycastResults.Length > 0)
         {
-            Dragable tempDragable = hit.GetComponent<Dragable>();
-
-            if (tempDragable == null)
+            if (!dragableSelected)
             {
-                if (dragableSelected)
+                Dragable tempDragable = hit.GetComponent<Dragable>();
+
+                if (tempDragable != null)
+                    SelectDragable(tempDragable);
+                else if (dragableSelected)
                     DeselectDragable();
             }
-            else
-                SelectDragable(tempDragable);
+
+            if (!patientSelected)
+            {
+                Interactable tempPatient = hit.GetComponent<Interactable>();
+
+                if (tempPatient.InteractableType == InteractableType.Patient)
+                {
+                    hoversOverPatient = true;
+                    selectedPatient = (Patient)tempPatient;
+                }
+            }
         }
+        else
+        {
+            if (patientSelected)
+            {
+                patientSelected = false;
+                selectedPatient = null;
+            }
+        }
+
+        // Debug.Log("Patient Selected = " + patientSelected);
 
         if (dragableSelected)
         {
@@ -70,7 +93,6 @@ public class ObjectSelector : MonoBehaviour
             if (raycastResults.Length == 0)
             {
                 DeselectDragable();
-                return;
             }
         }
 
@@ -145,6 +167,7 @@ public class ObjectSelector : MonoBehaviour
             RaycastHit2D tempHit = raycastResults[index];
             if (tempHit.transform != null || tempHit.transform.position.z < hit.transform.position.z)
                 hit = tempHit.transform;
+
         }
     }
 
@@ -157,15 +180,16 @@ public class ObjectSelector : MonoBehaviour
     {
         if (hoversOverCauldron)
         {
-            if (draggingDragableType == DragableType.Ingredient)
-            {
+            if (draggingDragable.GetComponent<Ingredient>() != null)
                 Cauldron.AddIngredient(draggingDragable.GetComponent<Ingredient>());
-            }
-            else if (draggingDragableType == DragableType.Brew)
-            {
+            else if (draggingDragableType == DragableType.Flask)
                 Flask.FillWithBrew(Cauldron.GetBrew());
-                Debug.Log("Fill flask with Brew");
-            }
+        }
+
+        if (hoversOverPatient)
+        {
+            selectedPatient.GiveBrew(Flask);
+            Flask.EmptyFlask();
         }
 
         draggingDragable.Drop();
