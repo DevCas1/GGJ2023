@@ -163,7 +163,7 @@ public class ObjectSelector : MonoBehaviour
             }
             else if (draggingDragableType == DragableType.Brew)
             {
-                // Flask.FillWithBrew(Cauldron.GetBrew());
+                Flask.FillWithBrew(Cauldron.GetBrew());
                 Debug.Log("Fill flask with Brew");
             }
         }

@@ -21,17 +21,15 @@ public class Flask : Dragable
         flaskContent.enabled = false;
     }
 
-    // public void FillWithBrew(Brew brew)
     public void FillWithBrew(Brew brew)
     {
-        hasBrew = true;
         containedBrew = brew;
+        hasBrew = true;
         SetBrewColor();
     }
 
     private void SetBrewColor()
     {
-        // Lerp color
         flaskContent.color = containedBrew.Color;
         flaskContent.enabled = true;
     }

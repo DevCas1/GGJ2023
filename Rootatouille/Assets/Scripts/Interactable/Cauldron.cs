@@ -119,7 +119,7 @@ public class Cauldron : Interactable
         currentBrew.SetIngredients(new Ingredients(containsBeetroot, containsMold, containsSunflower, amountOfHerbs), neutralBrewColor, false);
 
         // Reset cauldron FX
-        cauldronContent.color = neutralBrewColor;
+        cauldronContent.DOColor(neutralBrewColor, colorChangeTime);
         if (OnEmptyCauldron != null)
             OnEmptyCauldron.Invoke();
     }

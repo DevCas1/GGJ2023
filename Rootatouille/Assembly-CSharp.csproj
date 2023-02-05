@@ -48,6 +48,7 @@
      <Compile Include="Assets\Input\PlayerInput.cs" />
      <Compile Include="Assets\Scripts\Interactable\Interactable.cs" />
      <Compile Include="Assets\Scripts\InputHandler.cs" />
+     <Compile Include="Assets\Scripts\Interactable\Cork.cs" />
      <Compile Include="Assets\Scripts\RecipeBook.cs" />
      <Compile Include="Assets\Scripts\Interactable\Patient.cs" />
      <Compile Include="Assets\Scripts\Interactable\InteractableType.cs" />
