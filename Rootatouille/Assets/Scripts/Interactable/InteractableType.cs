@@ -1,1 +1,1 @@
-public enum InteractableType { Brew, Cauldron, Dragable, Patient }
+public enum InteractableType { Flask, Cauldron, Cork, Patient }

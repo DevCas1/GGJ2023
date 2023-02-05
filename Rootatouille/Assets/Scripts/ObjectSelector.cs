@@ -1,16 +1,20 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Camera))]
 public class ObjectSelector : MonoBehaviour
 {
     private enum PointerClickStatus { None, Click, Hold, Release }
+    public UnityEvent OnSelectInteractable;
+    public UnityEvent OnDeselectInteractable;
+    // public UnityEvent 
 
     public LayerMask InteractableFilter;
 
     [SerializeField] private InputHandler InputHandler;
     [SerializeField] private Cauldron Cauldron;
-    [SerializeField] private Brew Flask;
+    [SerializeField] private Flask Flask;
 
     private new Camera camera;
 
@@ -22,6 +26,7 @@ public class ObjectSelector : MonoBehaviour
     private Transform hit;
 
     private bool hoversOverCauldron;
+    private bool hoversOverPatient;
 
     private Dragable selectedDragable = null;
     private bool dragableSelected = false;
@@ -48,17 +53,6 @@ public class ObjectSelector : MonoBehaviour
         {
             Dragable tempDragable = hit.GetComponent<Dragable>();
 
-            // for (int index = 0; index < raycastResults.Length; index++)
-            // {
-            //     Dragable tempDragable = raycastResults[index].transform.GetComponent<Dragable>();
-
-            //     if (tempDragable == null || !tempDragable.IsSelectable)
-            //         continue;
-
-            //     if (nearestDragable == null || tempDragable.transform.position.z < nearestDragable.transform.position.z)
-            //         nearestDragable = tempDragable;
-            // }
-
             if (tempDragable == null)
             {
                 if (dragableSelected)
@@ -82,10 +76,8 @@ public class ObjectSelector : MonoBehaviour
 
         if (isDragging)
         {
-            if (hasHit)
-                hoversOverCauldron = hit.name == Cauldron.transform.name;
-            else
-                hoversOverCauldron = false;
+            hoversOverCauldron = hasHit && hit.name == Cauldron.transform.name;
+            hoversOverPatient = hasHit && (hit.GetComponent<Interactable>()?.InteractableType == InteractableType.Patient);
 
             switch (pointerStatus)
             {
@@ -116,6 +108,8 @@ public class ObjectSelector : MonoBehaviour
         dragableSelected = true;
         draggingDragableType = selectedDragable.dragableType;
         selectedDragable.Select();
+        if (OnSelectInteractable != null)
+            OnSelectInteractable.Invoke();
     }
 
     private void DeselectDragable()
@@ -123,6 +117,8 @@ public class ObjectSelector : MonoBehaviour
         selectedDragable.Deselect();
         dragableSelected = false;
         selectedDragable = null;
+        if (OnDeselectInteractable != null)
+            OnDeselectInteractable.Invoke();
     }
 
     private void StartDragging()
@@ -159,20 +155,21 @@ public class ObjectSelector : MonoBehaviour
 
     private void StopDragging()
     {
-        isDragging = false;
-
-        if (draggingDragableType == DragableType.Ingredient && hoversOverCauldron)
+        if (hoversOverCauldron)
         {
-            Cauldron.AddIngredient(draggingDragable.GetComponent<Ingredient>());
-        }
-
-        if (draggingDragableType == DragableType.Brew && hoversOverCauldron)
-        {
-            bool correctRecipe = Cauldron.GetFromCauldron(out Recipe recipe);
-            Flask.SetRecipe(correctRecipe, correctRecipe ? recipe.RecipeColor : Cauldron.FailedBrewColor, recipe);
+            if (draggingDragableType == DragableType.Ingredient)
+            {
+                Cauldron.AddIngredient(draggingDragable.GetComponent<Ingredient>());
+            }
+            else if (draggingDragableType == DragableType.Brew)
+            {
+                // Flask.FillWithBrew(Cauldron.GetBrew());
+                Debug.Log("Fill flask with Brew");
+            }
         }
 
         draggingDragable.Drop();
+        isDragging = false;
         draggingDragable = null;
     }
 

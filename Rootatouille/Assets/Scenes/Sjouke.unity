@@ -525,7 +525,7 @@ SpriteRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 463399173}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 0
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
@@ -698,12 +698,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 334a15fb2b4c7d240b81b94687acafe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  OnSelectInteractable:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDeselectInteractable:
+    m_PersistentCalls:
+      m_Calls: []
   InteractableFilter:
     serializedVersion: 2
     m_Bits: 128
   InputHandler: {fileID: 11400000, guid: 6009219413f7a6b4c991a58eabc1f517, type: 2}
-  Cauldron: {fileID: 0}
-  Flask: {fileID: 0}
+  Cauldron: {fileID: 1909166535}
+  Flask: {fileID: 1389733570}
 --- !u!82 &519420035
 AudioSource:
   m_ObjectHideFlags: 0
@@ -970,7 +976,7 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b9340641554048a44950528552eeb817, type: 3}
-  m_Color: {r: 0, g: 1, b: 0.027679205, a: 1}
+  m_Color: {r: 1, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -2350,6 +2356,13 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   dragableType: 1
+  OnFillFlask:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEmptyFlask:
+    m_PersistentCalls:
+      m_Calls: []
+  flaskContent: {fileID: 463399175}
 --- !u!1 &1451751298
 GameObject:
   m_ObjectHideFlags: 0
@@ -3039,9 +3052,16 @@ MonoBehaviour:
   OnDeselect:
     m_PersistentCalls:
       m_Calls: []
-  FailedBrewColor: {r: 0.4339623, g: 0.12540145, b: 0, a: 1}
+  OnBrewAdd:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEmptyCauldron:
+    m_PersistentCalls:
+      m_Calls: []
   cauldronContent: {fileID: 1801418889}
-  knownRecipies: {fileID: 11400000, guid: 8fe483f4f012eb04889cb8f31bf32f41, type: 2}
+  failedBrewColor: {r: 0.4811321, g: 0.4811321, b: 0.4811321, a: 1}
+  neutralBrewColor: {r: 1, g: 1, b: 1, a: 1}
+  colorChangeTime: 1.5
 --- !u!60 &1909166536
 PolygonCollider2D:
   m_ObjectHideFlags: 0

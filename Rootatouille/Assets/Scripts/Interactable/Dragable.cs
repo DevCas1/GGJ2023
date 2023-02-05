@@ -5,7 +5,6 @@ public class Dragable : Interactable
 {
     public UnityEvent OnDrag;
     public UnityEvent OnDrop;
-    public new InteractableType InteractableType => InteractableType.Dragable;
     public override bool IsSelectable { get => !isBeingDragged && collider.enabled; }
     public DragableType dragableType;
     protected Vector3 originalPosition;
