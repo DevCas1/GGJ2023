@@ -25,7 +25,7 @@ public class Brew
 
     public Brew(Ingredients ingredients, Color brewColor, bool failedBrew = false)
     {
-        SetIngredients(ingredients, brewColor, failedBrew);
+        SetContent(ingredients, brewColor, failedBrew);
     }
 
     public Ingredients BrewIngredients { get => ingredients; }
@@ -36,10 +36,17 @@ public class Brew
     private bool failedBrew;
     private Color brewColor;
 
-    public void SetIngredients(Ingredients ingredients, Color brewColor, bool failedBrew = false)
+    public void SetContent(Ingredients ingredients, Color brewColor, bool failedBrew = false)
     {
         this.ingredients = ingredients;
         this.brewColor = brewColor;
         this.failedBrew = failedBrew || (ingredients.Beetroot && ingredients.Mold && ingredients.Sunflower);
+    }
+
+    public void SetContent(Brew brew)
+    {
+        ingredients = brew.ingredients;
+        failedBrew = brew.FailedBrew;
+        brewColor = brew.Color;
     }
 }

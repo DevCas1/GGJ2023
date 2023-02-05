@@ -85,12 +85,12 @@ public class Cauldron : Interactable
         if (ingredient.HasColor)
             ChangeContentColor(ingredient);
 
-        currentBrew.SetIngredients(new Ingredients(containsBeetroot, containsMold, containsSunflower, amountOfHerbs), cauldronContent.color, false);
+        currentBrew.SetContent(new Ingredients(containsBeetroot, containsMold, containsSunflower, amountOfHerbs), cauldronContent.color, false);
     }
 
     private void FailBrew()
     {
-        currentBrew.SetIngredients(new Ingredients(containsBeetroot, containsMold, containsSunflower, amountOfHerbs), failedBrewColor, true);
+        currentBrew.SetContent(new Ingredients(containsBeetroot, containsMold, containsSunflower, amountOfHerbs), failedBrewColor, true);
         ChangeContentColor();
 
         Debug.Log("Brew failed!");
@@ -104,7 +104,7 @@ public class Cauldron : Interactable
         {
             bool mixColor = cauldronContent.color != neutralBrewColor;
             // cauldronContent.color = mixColor ? Color.Lerp(cauldronContent.color, ingredient.IngredientColor, 0.5f) : ingredient.IngredientColor;
-            cauldronContent.DOColor((mixColor ? Color.Lerp(cauldronContent.color, ingredient.IngredientColor, 0.5f) : ingredient.IngredientColor), colorChangeTime);
+            cauldronContent.DOColor((mixColor ? Color.Lerp(cauldronContent.color, ingredient.IngredientColor, 0.5f) : ingredient.IngredientColor), colorChangeTime).OnComplete(() => { currentBrew.SetContent(currentBrew.BrewIngredients, cauldronContent.color, currentBrew.FailedBrew); });
         }
     }
 
@@ -116,7 +116,7 @@ public class Cauldron : Interactable
         containsMold = false;
         containsSunflower = false;
         amountOfHerbs = 0;
-        currentBrew.SetIngredients(new Ingredients(containsBeetroot, containsMold, containsSunflower, amountOfHerbs), neutralBrewColor, false);
+        currentBrew.SetContent(new Ingredients(containsBeetroot, containsMold, containsSunflower, amountOfHerbs), neutralBrewColor, false);
 
         // Reset cauldron FX
         cauldronContent.DOColor(neutralBrewColor, colorChangeTime);
