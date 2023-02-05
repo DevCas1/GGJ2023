@@ -44,3 +44,6 @@ TagManager:
   - name: Outlines
     uniqueID: 1603623253
     locked: 0
+  - name: Particles
+    uniqueID: 46975993
+    locked: 0

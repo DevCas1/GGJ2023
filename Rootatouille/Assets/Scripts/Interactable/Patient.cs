@@ -15,12 +15,12 @@ public class Patient : Interactable
     [SerializeField] private bool needsBeetroot;
     [SerializeField] private bool needsMold;
     [SerializeField] private bool needsSunflower;
-    [SerializeField, Range(1, 3)] private int diseaseSeverity = 1;
+    [SerializeField, Range(1, 4)] private int diseaseSeverity = 1;
 
     private bool healed;
     private Vector3 originalPos;
 
-    private void Start()
+    public void Gooooo() // Made and named minutes from disaster
     {
         originalPos = transform.position;
         healed = false;
@@ -37,7 +37,7 @@ public class Patient : Interactable
     public void Leave()
     {
         patientSprite.DOFade(0, PatientMoveTime);
-        transform.DOMove(originalPos, PatientLeaveTime);
+        transform.DOMove(originalPos, PatientLeaveTime).OnComplete(() => { gameObject.SetActive(false); FindObjectOfType<PatientManager>().PatientGone(this); });
     }
 
     public bool GiveBrew(Flask flask)

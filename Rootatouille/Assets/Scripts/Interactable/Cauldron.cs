@@ -12,6 +12,7 @@ public class Cauldron : Interactable
     public Brew CurrentBrew { get => currentBrew; }
 
     [SerializeField] private SpriteRenderer cauldronContent;
+    [SerializeField] private ParticleSystem herbsParticleSystem;
     [SerializeField] private Color failedBrewColor;
     [SerializeField] private Color neutralBrewColor;
     [SerializeField] private float colorChangeTime = 1;
@@ -38,11 +39,8 @@ public class Cauldron : Interactable
 
             case IngredientType.Herb:
                 amountOfHerbs++;
-                if (amountOfHerbs > Recipe.MAX_AMOUNT_OF_HERBS)
-                {
-                    FailBrew();
-                    return;
-                }
+                // herbsParticleSystem.colorOverLifetime = currentBrew.Color;
+                herbsParticleSystem.Play();
                 break;
 
             case IngredientType.Mold:
