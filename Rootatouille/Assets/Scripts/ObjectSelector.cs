@@ -1,15 +1,20 @@
 using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Camera))]
 public class ObjectSelector : MonoBehaviour
 {
     private enum PointerClickStatus { None, Click, Hold, Release }
+    public UnityEvent OnSelectInteractable;
+    public UnityEvent OnDeselectInteractable;
+    // public UnityEvent 
 
     public LayerMask InteractableFilter;
 
     [SerializeField] private InputHandler InputHandler;
     [SerializeField] private Cauldron Cauldron;
+    [SerializeField] private Flask Flask;
 
     private new Camera camera;
 
@@ -21,12 +26,15 @@ public class ObjectSelector : MonoBehaviour
     private Transform hit;
 
     private bool hoversOverCauldron;
+    private bool hoversOverPatient;
 
     private Dragable selectedDragable = null;
     private bool dragableSelected = false;
     private bool isDragging = false;
     private Dragable draggingDragable = null;
     private DragableType draggingDragableType;
+    private Patient selectedPatient = null;
+    private bool patientSelected = false;
 
     private void Awake()
     {
@@ -43,29 +51,39 @@ public class ObjectSelector : MonoBehaviour
     {
         CheckForObjects();
 
-        if (!dragableSelected && raycastResults.Length > 0)
+        if (raycastResults.Length > 0)
         {
-            Dragable tempDragable = hit.GetComponent<Dragable>();
-
-            // for (int index = 0; index < raycastResults.Length; index++)
-            // {
-            //     Dragable tempDragable = raycastResults[index].transform.GetComponent<Dragable>();
-
-            //     if (tempDragable == null || !tempDragable.IsSelectable)
-            //         continue;
-
-            //     if (nearestDragable == null || tempDragable.transform.position.z < nearestDragable.transform.position.z)
-            //         nearestDragable = tempDragable;
-            // }
-
-            if (tempDragable == null)
+            if (!dragableSelected)
             {
-                if (dragableSelected)
+                Dragable tempDragable = hit.GetComponent<Dragable>();
+
+                if (tempDragable != null)
+                    SelectDragable(tempDragable);
+                else if (dragableSelected)
                     DeselectDragable();
             }
-            else
-                SelectDragable(tempDragable);
+
+            if (!patientSelected)
+            {
+                Interactable tempPatient = hit.GetComponent<Interactable>();
+
+                if (tempPatient.InteractableType == InteractableType.Patient)
+                {
+                    hoversOverPatient = true;
+                    selectedPatient = (Patient)tempPatient;
+                }
+            }
         }
+        else
+        {
+            if (patientSelected)
+            {
+                patientSelected = false;
+                selectedPatient = null;
+            }
+        }
+
+        // Debug.Log("Patient Selected = " + patientSelected);
 
         if (dragableSelected)
         {
@@ -75,16 +93,13 @@ public class ObjectSelector : MonoBehaviour
             if (raycastResults.Length == 0)
             {
                 DeselectDragable();
-                return;
             }
         }
 
         if (isDragging)
         {
-            if (hasHit)
-                hoversOverCauldron = hit.name == Cauldron.transform.name;
-            else
-                hoversOverCauldron = false;
+            hoversOverCauldron = hasHit && hit.name == Cauldron.transform.name;
+            hoversOverPatient = hasHit && (hit.GetComponent<Interactable>()?.InteractableType == InteractableType.Patient);
 
             switch (pointerStatus)
             {
@@ -115,6 +130,8 @@ public class ObjectSelector : MonoBehaviour
         dragableSelected = true;
         draggingDragableType = selectedDragable.dragableType;
         selectedDragable.Select();
+        if (OnSelectInteractable != null)
+            OnSelectInteractable.Invoke();
     }
 
     private void DeselectDragable()
@@ -122,6 +139,8 @@ public class ObjectSelector : MonoBehaviour
         selectedDragable.Deselect();
         dragableSelected = false;
         selectedDragable = null;
+        if (OnDeselectInteractable != null)
+            OnDeselectInteractable.Invoke();
     }
 
     private void StartDragging()
@@ -148,6 +167,7 @@ public class ObjectSelector : MonoBehaviour
             RaycastHit2D tempHit = raycastResults[index];
             if (tempHit.transform != null || tempHit.transform.position.z < hit.transform.position.z)
                 hit = tempHit.transform;
+
         }
     }
 
@@ -158,15 +178,22 @@ public class ObjectSelector : MonoBehaviour
 
     private void StopDragging()
     {
-        isDragging = false;
-
-        if (draggingDragableType == DragableType.Ingredient && hoversOverCauldron)
+        if (hoversOverCauldron)
         {
-            // Debug.Log($"Dropped {draggingDragable.dragableType} {draggingDragable.transform.name} into the cauldron.");
-            Cauldron.AddIngredient(draggingDragable.GetComponent<Ingredient>());
+            if (draggingDragable.GetComponent<Ingredient>() != null)
+                Cauldron.AddIngredient(draggingDragable.GetComponent<Ingredient>());
+            else if (draggingDragableType == DragableType.Flask)
+                Flask.FillWithBrew(Cauldron.GetBrew());
+        }
+
+        if (hoversOverPatient)
+        {
+            selectedPatient.GiveBrew(Flask);
+            Flask.EmptyFlask();
         }
 
         draggingDragable.Drop();
+        isDragging = false;
         draggingDragable = null;
     }
 

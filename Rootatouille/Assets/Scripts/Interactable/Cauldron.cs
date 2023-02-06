@@ -1,24 +1,31 @@
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
+using Ingredients = Brew.Ingredients;
 
 public class Cauldron : Interactable
 {
+    public UnityEvent OnBrewAdd;
+    public UnityEvent OnEmptyCauldron;
+
     public new InteractableType InteractableType => InteractableType.Cauldron;
+    public Brew CurrentBrew { get => currentBrew; }
 
     [SerializeField] private SpriteRenderer cauldronContent;
-    [SerializeField] private RecipeBook knownRecipies;
+    [SerializeField] private ParticleSystem herbsParticleSystem;
+    [SerializeField] private Color failedBrewColor;
+    [SerializeField] private Color neutralBrewColor;
+    [SerializeField] private float colorChangeTime = 1;
 
+    private Brew currentBrew;
     private bool containsMold;
     private bool containsBeetroot;
     private bool containsSunflower;
     private int amountOfHerbs = 0;
 
-    private int remainingRecipies;
-    private Recipe brewnRecipe;
-    private bool correctRecipe;
-
     private void Start()
     {
-        remainingRecipies = knownRecipies.Recipes.Length;
+        currentBrew = new Brew(new Ingredients(containsBeetroot, containsMold, containsSunflower, amountOfHerbs), neutralBrewColor);
     }
 
     public void AddIngredient(Ingredient ingredient)
@@ -26,16 +33,14 @@ public class Cauldron : Interactable
         switch (ingredient.IngredientType)
         {
             case IngredientType.Carrot:
-                amountOfHerbs = 0;
+                if (amountOfHerbs > 0)
+                    amountOfHerbs--;
                 break;
 
             case IngredientType.Herb:
                 amountOfHerbs++;
-                if (amountOfHerbs > Recipe.MAX_AMOUNT_OF_HERBS)
-                {
-                    FailBrew();
-                    return;
-                }
+                // herbsParticleSystem.colorOverLifetime = currentBrew.Color;
+                herbsParticleSystem.Play();
                 break;
 
             case IngredientType.Mold:
@@ -69,65 +74,51 @@ public class Cauldron : Interactable
                 break;
         }
 
-        int possibleCount = 0;
-        foreach (Recipe recipe in knownRecipies.Recipes)
+        if (containsBeetroot && containsMold && containsSunflower)
         {
-            if (CheckRecipe(recipe, out bool possible))
-            {
-                correctRecipe = true;
-                brewnRecipe = recipe;
-
-            }
-
-            if (possible)
-                possibleCount++;
+            FailBrew();
+            return;
         }
 
-        remainingRecipies = possibleCount;
+        if (ingredient.HasColor)
+            ChangeContentColor(ingredient);
 
-        string message = (correctRecipe ? "Current brew: " + brewnRecipe.name : "Current brew isn't known") + ". Remaining possibilities: " + remainingRecipies;
-        Debug.Log(message);
-
-        // Change cauldron FX
+        currentBrew.SetContent(new Ingredients(containsBeetroot, containsMold, containsSunflower, amountOfHerbs), cauldronContent.color, false);
     }
 
     private void FailBrew()
     {
-        correctRecipe = false;
-        brewnRecipe = null;
-        remainingRecipies = 0;
+        currentBrew.SetContent(new Ingredients(containsBeetroot, containsMold, containsSunflower, amountOfHerbs), failedBrewColor, true);
+        ChangeContentColor();
 
         Debug.Log("Brew failed!");
     }
 
-    private bool CheckRecipe(Recipe recipe, out bool possible)
+    private void ChangeContentColor(Ingredient ingredient = null) //TODO: Lerp color over time
     {
-        Recipe.IngredientList ingredientList = recipe.Content;
-        int requiredHerbs = ingredientList.Herbs;
-        bool requiresBeet = ingredientList.Beet;
-        bool requiresMold = ingredientList.Mold;
-        bool requiresSunflower = ingredientList.Sunflower;
-
-        possible = ((amountOfHerbs == requiredHerbs) || (amountOfHerbs < requiredHerbs)) && ((containsBeetroot == requiresBeet) || (containsBeetroot == false && requiresBeet == true)) && ((containsMold == requiresMold) || (containsMold == false && requiresMold == true)) && ((containsSunflower == requiresSunflower) || (containsSunflower == false && requiresSunflower == true));
-        return (amountOfHerbs == requiredHerbs) && (containsBeetroot == requiresBeet) && (containsMold == requiresMold) && (containsSunflower == requiresSunflower);
+        if (currentBrew.FailedBrew)
+            cauldronContent.DOColor(failedBrewColor, colorChangeTime);
+        else
+        {
+            bool mixColor = cauldronContent.color != neutralBrewColor;
+            // cauldronContent.color = mixColor ? Color.Lerp(cauldronContent.color, ingredient.IngredientColor, 0.5f) : ingredient.IngredientColor;
+            cauldronContent.DOColor((mixColor ? Color.Lerp(cauldronContent.color, ingredient.IngredientColor, 0.5f) : ingredient.IngredientColor), colorChangeTime).OnComplete(() => { currentBrew.SetContent(currentBrew.BrewIngredients, cauldronContent.color, currentBrew.FailedBrew); });
+        }
     }
 
-    public bool GetFromCauldron(out Recipe recipe)
-    {
-        recipe = brewnRecipe;
-        return correctRecipe;
-    }
+    public Brew GetBrew() => CurrentBrew;
 
     public void EmptyCauldron()
     {
-        containsMold = false;
         containsBeetroot = false;
+        containsMold = false;
         containsSunflower = false;
         amountOfHerbs = 0;
-        remainingRecipies = knownRecipies.Recipes.Length;
-        brewnRecipe = null;
-        correctRecipe = false;
+        currentBrew.SetContent(new Ingredients(containsBeetroot, containsMold, containsSunflower, amountOfHerbs), neutralBrewColor, false);
 
         // Reset cauldron FX
+        cauldronContent.DOColor(neutralBrewColor, colorChangeTime);
+        if (OnEmptyCauldron != null)
+            OnEmptyCauldron.Invoke();
     }
 }
